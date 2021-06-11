@@ -4,15 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.lang.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.mongodb.client.model.Filters.eq;
 import com.mongodb.client.*;
-import org.bson.BsonArray;
 import org.bson.Document;
-
-import org.noonsong.secondLeftComponent.SetHeaderFirst;
 
 public class LoginWindow extends JFrame implements ActionListener {
 

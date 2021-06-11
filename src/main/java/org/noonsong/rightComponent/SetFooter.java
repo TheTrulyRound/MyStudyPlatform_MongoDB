@@ -1,21 +1,9 @@
 package org.noonsong.rightComponent;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.BsonArray;
-import org.bson.Document;
-
-import org.noonsong.MakeStudy;
-import org.noonsong.LoginWindow;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -60,47 +48,56 @@ public class SetFooter {
                                 .addGap(15, 15, 15))
         );
     }
+    //TODO 테스트 끝내고 관련 코드 지우기
+    public static int count ;
+
     private void footerBtnActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
         String footerType = evt.getActionCommand();
 
         if (footerType.equals("저장하기")) {
-            //Logger.getLogger("org.mongodb.driver").setLevel(Level.WARNING);
-            String connectionString = "mongodb+srv://studyplatform:studyplatform@studyplatformcluster.msr51.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-            try (MongoClient mongoClient = MongoClients.create(connectionString)) {
-                MongoDatabase study_group_info = mongoClient.getDatabase("study_group_info");
-                MongoCollection<Document> groups = study_group_info.getCollection("groups");
-
-                MongoDatabase user_info = mongoClient.getDatabase("user_info");
-                MongoCollection<Document> user_info_col = user_info.getCollection("0");
-
-                // TODO 그룹인포 데이터베이스에 추가
-                Document newStudy = new Document();
-                newStudy.append("title", MakeStudy.studyNameW.getText());
-                newStudy.append("intro", MakeStudy.studyDetailW.getText());
-                newStudy.append("rules", MakeStudy.studyRulesW.getText());
-                newStudy.append("isRecruiting", true);
-                newStudy.append("maxMember", (int)MakeStudy.joinNumberSpinner.getValue());
-                newStudy.append("startingDate", MakeStudy.studyTimeW.getText());
-                newStudy.append("period", MakeStudy.studyDuration);
-                newStudy.append("leader", LoginWindow.userId);
-                newStudy.append("members", Arrays.asList(LoginWindow.userId));
-                newStudy.append("homework", Arrays.asList());
-                groups.insertOne(newStudy);
-                
-                // TODO 내 멤버 정보 업데이트
-                Object doc = LoginWindow.userDoc.get("joinedGroup");
-                System.out.println("before: "+doc);
-                ArrayList<String> joinedGroup = (ArrayList<String>) doc;
-
-                joinedGroup.add(MakeStudy.studyNameW.getText());
-                System.out.println("after: "+joinedGroup);
-
-                
-                // TODO 새로 생성된 페이지로 바로 가기
-
+            try {
+                count += 1;
+                System.out.println("db에 저장하는지 테스트하는 임시 코드" + count);
             }
             catch (Exception ex) { System.out.println("서버 접속 실패."); }
         }
+
+            //Logger.getLogger("org.mongodb.driver").setLevel(Level.WARNING);
+//            String connectionString = "mongodb+srv://studyplatform:studyplatform@studyplatformcluster.msr51.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+//            try (MongoClient mongoClient = MongoClients.create(connectionString)) {
+//                MongoDatabase study_group_info = mongoClient.getDatabase("study_group_info");
+//                MongoCollection<Document> groups = study_group_info.getCollection("groups");
+//
+//                MongoDatabase user_info = mongoClient.getDatabase("user_info");
+//                MongoCollection<Document> user_info_col = user_info.getCollection("0");
+//
+//                // TODO 그룹인포 데이터베이스에 추가
+//                Document newStudy = new Document();
+//                newStudy.append("title", MakeStudy.studyNameW.getText());
+//                newStudy.append("intro", MakeStudy.studyDetailW.getText());
+//                newStudy.append("rules", MakeStudy.studyRulesW.getText());
+//                newStudy.append("isRecruiting", true);
+//                newStudy.append("maxMember", (int)MakeStudy.joinNumberSpinner.getValue());
+//                newStudy.append("startingDate", MakeStudy.studyTimeW.getText());
+//                newStudy.append("period", MakeStudy.studyDuration);
+//                newStudy.append("leader", LoginWindow.userId);
+//                newStudy.append("members", Arrays.asList(LoginWindow.userId));
+//                newStudy.append("homework", Arrays.asList());
+//                groups.insertOne(newStudy);
+//
+//                // TODO 내 멤버 정보 업데이트
+//                Object doc = LoginWindow.userDoc.get("joinedGroup");
+//                System.out.println("before: "+doc);
+//                ArrayList<String> joinedGroup = (ArrayList<String>) doc;
+//
+//                joinedGroup.add(MakeStudy.studyNameW.getText());
+//                System.out.println("after: "+joinedGroup);
+//
+//
+//                // TODO 새로 생성된 페이지로 바로 가기
+//            }
+//            catch (Exception ex) { System.out.println("서버 접속 실패."); }
+//        }
     }
 }

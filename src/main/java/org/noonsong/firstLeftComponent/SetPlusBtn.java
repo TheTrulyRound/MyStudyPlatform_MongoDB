@@ -1,6 +1,5 @@
 package org.noonsong.firstLeftComponent;
 
-import org.noonsong.Background;
 import org.noonsong.MakeStudy;
 
 import javax.swing.*;
@@ -33,10 +32,10 @@ public class SetPlusBtn {
     private void plusBtnActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
         if (evt.getSource() == plusBtn) {
-            Background.mainFrame.getContentPane().removeAll();
-            Background.mainFrame.dispose();
-            new MakeStudy();
-            Background.mainFrame.getContentPane().repaint();
+            Component component = (Component) evt.getSource();
+            JFrame frame = (JFrame) SwingUtilities.getRoot(component);
+            frame.dispose(); // 현재 프레임 삭제
+            new MakeStudy();                // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
         }
     }
 }

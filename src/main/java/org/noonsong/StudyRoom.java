@@ -20,7 +20,7 @@ public class StudyRoom extends JFrame {
 
     public void initComponents() {
 
-        // 전체  레이아웃 - firstLeft, secondLeft, rightPanel
+        // 전체  레이아웃 - firstLeft, secondLeftComponent, rightPanel
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(

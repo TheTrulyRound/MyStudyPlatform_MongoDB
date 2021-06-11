@@ -1,7 +1,7 @@
 package org.noonsong.firstLeftComponent;
 
 import org.noonsong.Background;
-
+import org.noonsong.Explore;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 public class SetExploreBtn {
     public static JButton exploreBtn = new JButton();
 
-    public SetExploreBtn(){
+    public SetExploreBtn() {
         //그룹 탐색 버튼 레이이웃. 밑의 버튼 이벤트 코드 작성 필요.
         exploreBtn.setBackground(new Color(253, 253, 248));
         exploreBtn.setForeground(new Color(253, 253, 248));
@@ -26,11 +26,14 @@ public class SetExploreBtn {
             }
         });
     }
+
     private void exploreBtnActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
         if (evt.getSource() == exploreBtn) {
-            Background.mainFrame.dispose();
-            new org.noonsong.MakeStudy();
+            Component component = (Component) evt.getSource();
+            JFrame frame = (JFrame) SwingUtilities.getRoot(component);
+            frame.dispose(); // 현재 프레임 삭제
+            new Explore();                // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
         }
     }
 }

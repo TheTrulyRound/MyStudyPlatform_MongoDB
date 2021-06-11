@@ -1,15 +1,21 @@
 package org.noonsong;
 
+import org.noonsong.firstLeftComponent.SetFirstLeftPanel;
 import org.noonsong.secondLeftComponent.ExploreMenu;
 import org.noonsong.secondLeftComponent.SetHeaderFirst;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
 import javax.swing.*;
 
-public class Explore extends Background {
+public class Explore extends JFrame{
+    public static SetFirstLeftPanel firstLeft = new SetFirstLeftPanel();
+    public static JPanel secondLeftPanel = new JPanel();
+    public static JPanel rightPanel = new JPanel();
+    SetHeaderFirst hSearch = new SetHeaderFirst("찾기");
+    ExploreMenu searchMenu = new ExploreMenu();
+
     JPanel banner,searchPanel,exploreView,studyIntro;
     JLabel bannerImg,categoryVar,studyName,studyImg;
     JTextField searchTextFiled;
@@ -18,9 +24,15 @@ public class Explore extends Background {
     JTextPane studyIntroW;
     JButton studyMore;
 
+
     public Explore() {
-        super.initComponents();
+        setTitle("눈송보드 > 그룹 찾기 ");
         initComponents();
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new Dimension(1030, 600));
+        setLocationRelativeTo(null);
+        setVisible(true);
+        pack();
     }
 
     public void initComponents() {
@@ -40,12 +52,15 @@ public class Explore extends Background {
         studyMore = new JButton();
         studyImg = new JLabel();
 
-        //@Override
-        ExploreMenu searchMenu = new ExploreMenu();
-        SetHeaderFirst hSearch = new SetHeaderFirst("찾기");
-        //StudyDetailDialog detail = new StudyDetailDialog();
+
+
+//        StudyDetailDialog detail = new StudyDetailDialog();
 
         //secondLeftPanel 레이아웃
+        secondLeftPanel.setBackground(new Color(238, 241, 244));
+        secondLeftPanel.setMinimumSize(new Dimension(242, 600));
+        secondLeftPanel.setPreferredSize(new Dimension(242, 600));
+
         GroupLayout secondLeftPanelLayout = new GroupLayout(secondLeftPanel);
         secondLeftPanel.setLayout(secondLeftPanelLayout);
         secondLeftPanelLayout.setHorizontalGroup(
@@ -81,7 +96,7 @@ public class Explore extends Background {
         banner.setPreferredSize(new Dimension(690, 215));
 
         //문제 : 배너이미지 생성안되면서 그 위에 붙이는 텍스트필드패널 작동안함.
-        bannerImg.setIcon(new ImageIcon("img/SB_DeepBlue.png")); // NOI18N
+        bannerImg.setIcon(new ImageIcon("../img/SB_DeepBlue.png")); // NOI18N
         bannerImg.setText("배너이미지 대체 텍스트");
         bannerImg.setIconTextGap(0);
         bannerImg.setMaximumSize(new Dimension(690, 215));
@@ -188,6 +203,9 @@ public class Explore extends Background {
         categoryVar.setMinimumSize(new Dimension(170, 57));
         categoryVar.setPreferredSize(new Dimension(170, 57));
 
+
+
+
         //스터디 그룹 미리보기 패널
         studyPreview.setBorder(BorderFactory.createEtchedBorder());
         studyPreview.setMinimumSize(new Dimension(330, 270));
@@ -250,7 +268,7 @@ public class Explore extends Background {
                                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
-        studyImg.setIcon(new ImageIcon("img/dev_group.jpg")); // NOI18N
+        studyImg.setIcon(new ImageIcon("../img/dev_group.jpg")); // NOI18N
         studyImg.setText("그룹 대표 이미지 대체 텍스트");
         studyImg.setIconTextGap(0);
         studyImg.setMinimumSize(new Dimension(330, 125));
@@ -310,7 +328,11 @@ public class Explore extends Background {
 
         explorePane.setViewportView(exploreView);
 
+        rightPanel.setBackground(new Color(255, 255, 255));
+        rightPanel.setMinimumSize(new Dimension(716, 600));
+        rightPanel.setPreferredSize(new Dimension(716, 600));
         GroupLayout rightPanelLayout = new GroupLayout(rightPanel);
+
         rightPanel.setLayout(rightPanelLayout);
         rightPanelLayout.setHorizontalGroup(
                 rightPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -331,12 +353,13 @@ public class Explore extends Background {
                                 .addComponent(explorePane, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))
         );
 
-        GroupLayout layout = new GroupLayout(Background.mainFrame.getContentPane());
-        Background.mainFrame.getContentPane().setLayout(layout);
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addGap(72, 72, 72)
+                                .addComponent(firstLeft.firstLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
                                 .addComponent(secondLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, 0)
                                 .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -344,13 +367,13 @@ public class Explore extends Background {
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(firstLeft.firstLeftPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(secondLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))
         );
-
 
 
     }
@@ -365,5 +388,6 @@ public class Explore extends Background {
     private void searchTextFiledActionPerformed(ActionEvent evt) {
         // TODO add your handling code here:
     }
+
 
 }
