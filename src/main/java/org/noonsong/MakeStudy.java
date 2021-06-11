@@ -27,11 +27,11 @@ public class MakeStudy extends JFrame {
     ButtonGroup durationGroup;
 
     public static int count;
-
     public MakeStudy() {
+
         setTitle("눈송보드 > 그룹 만들기");
         initComponents();
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(1030, 600));
         setLocationRelativeTo(null);
         setVisible(true);
@@ -40,7 +40,7 @@ public class MakeStudy extends JFrame {
 
     public void initComponents() {
         count += 1;
-        System.out.println("이니셜라이저 실행: " + count);
+        System.out.println("MakeStudy 이니셜라이저 실행: " + count);
 
         loadTxtPanel = new JPanel();
         loaderTxt = new JLabel();

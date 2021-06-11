@@ -20,7 +20,7 @@ public class Background {
     public static JLabel homeMessage = new JLabel();
 
     public static SetHeaderFirst hFirst = new SetHeaderFirst("마이 페이지");
-
+    public static int count;
 
     public Background() {
         mainFrame.setTitle("눈송보드");
@@ -33,6 +33,8 @@ public class Background {
     }
 
     public void initComponents() {
+        count += 1;
+        System.out.println("BackGround 이니셜라이저 실행: " + count);
 
         JButton studyHwMore = new JButton();
         JLabel studyImg = new JLabel();

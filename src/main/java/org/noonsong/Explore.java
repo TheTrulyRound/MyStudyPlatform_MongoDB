@@ -28,14 +28,16 @@ public class Explore extends JFrame{
     public Explore() {
         setTitle("눈송보드 > 그룹 찾기 ");
         initComponents();
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(1030, 600));
         setLocationRelativeTo(null);
         setVisible(true);
         pack();
     }
-
+    public static int count ;
     public void initComponents() {
+        count += 1;
+        System.out.println("Explore 이니셜라이저 실행: " + count);
 
         bannerLayer = new JLayeredPane();
         banner = new JPanel();
