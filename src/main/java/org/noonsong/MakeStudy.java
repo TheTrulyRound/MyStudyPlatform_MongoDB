@@ -1,5 +1,6 @@
 package org.noonsong;
 
+import org.noonsong.firstLeftComponent.SetFirstLeftPanel;
 import org.noonsong.rightComponent.SetFooter;
 import org.noonsong.secondLeftComponent.SetHeaderFirst;
 
@@ -9,7 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 //TODO 요소들 분리하기
-public class MakeStudy extends Background {
+public class MakeStudy extends JPanel {
+
+    public static SetFirstLeftPanel firstLeft = new SetFirstLeftPanel();
+    public static JPanel secondLeftPanel = new JPanel();
+    //    public static JPanel rightPanel = new JPanel();
     JPanel loadTxtPanel, body, studyName, studyRule, studyTime, joinNumber, studyDetail;
     JLabel loaderTxt, studyNameIs, studyRulesAre, studyTimeIs,
             studyTimeLabel, studyDurationLabel, joinNumberIs, joinNumberLabel, studyDetailIs;
@@ -24,13 +29,18 @@ public class MakeStudy extends Background {
     public static int count;
 
     public MakeStudy() {
-        super.initComponents();
         initComponents();
+        setMinimumSize(new Dimension(1030, 600));
+        setVisible(true);
+//        setTitle("눈송보드 > 그룹 만들기");
+//        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        setLocationRelativeTo(null);
+//        pack();
     }
 
     public void initComponents() {
         count += 1;
-        System.out.println("이니셜라이저 실행: " + count);
+        System.out.println("MakeStudy 이니셜라이저 실행: " + count);
 
         loadTxtPanel = new JPanel();
         loaderTxt = new JLabel();
@@ -248,7 +258,7 @@ public class MakeStudy extends Background {
         studyTimeIs.setPreferredSize(new Dimension(257, 25));
 
         studyTimeW.setFont(new Font("돋움", 0, 11)); // NOI18N
-        studyTimeW.setText("예 ) 2021.06.21");   // 
+        studyTimeW.setText("예 ) 2021.06.21");   //
 
 
         studyTimeLabel.setFont(new Font("돋움", 1, 14)); // NOI18N
@@ -437,10 +447,11 @@ public class MakeStudy extends Background {
 
         bodyPanel.setViewportView(body);
 
-        GroupLayout rightPanelLayout = new GroupLayout(rightPanel);
-        rightPanel.setLayout(rightPanelLayout);
+        GroupLayout rightPanelLayout = new GroupLayout(this);
+        this.setLayout(rightPanelLayout);
         rightPanelLayout.setHorizontalGroup(
                 rightPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGap(0, 716, Short.MAX_VALUE)
                         .addGroup(GroupLayout.Alignment.TRAILING, rightPanelLayout.createSequentialGroup()
                                 .addGroup(rightPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                                         .addComponent(bodyPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -452,6 +463,7 @@ public class MakeStudy extends Background {
         );
         rightPanelLayout.setVerticalGroup(
                 rightPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGap(0, 600, Short.MAX_VALUE)
                         .addGroup(GroupLayout.Alignment.TRAILING, rightPanelLayout.createSequentialGroup()
                                 .addGap(0, 0, 0)
                                 .addComponent(bodyPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -459,9 +471,57 @@ public class MakeStudy extends Background {
                                 .addComponent(fSave.footer, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, 0))
         );
-        mainFrame.getContentPane().validate();
-        mainFrame.getContentPane().repaint();
-        mainFrame.pack();
+
+
+//        GroupLayout rightPanelLayout = new GroupLayout(rightPanel);
+//        rightPanel.setLayout(rightPanelLayout);
+//        rightPanelLayout.setHorizontalGroup(
+//                rightPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGap(0, 716, Short.MAX_VALUE)
+//                        .addGroup(GroupLayout.Alignment.TRAILING, rightPanelLayout.createSequentialGroup()
+//                                .addGroup(rightPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+//                                        .addComponent(bodyPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                                        .addGroup(rightPanelLayout.createSequentialGroup()
+//                                                .addGap(0, 0, Short.MAX_VALUE)
+//                                                .addComponent(fSave.footer, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+//                                )
+//                                .addContainerGap())
+//        );
+//        rightPanelLayout.setVerticalGroup(
+//                rightPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGap(0, 600, Short.MAX_VALUE)
+//                        .addGroup(GroupLayout.Alignment.TRAILING, rightPanelLayout.createSequentialGroup()
+//                                .addGap(0, 0, 0)
+//                                .addComponent(bodyPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                                .addGap(0, 0, 0)
+//                                .addComponent(fSave.footer, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(0, 0, 0))
+//        );
+
+        //TODO MakeStudy, StudyRoom, Explore 의 rightPanel을 각각 전환시킬 수 있도록 만들기
+//        GroupLayout layout = new GroupLayout(getContentPane());
+//        getContentPane().setLayout(layout);
+//        layout.setHorizontalGroup(
+//                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGroup(layout.createSequentialGroup()
+//                                .addComponent(firstLeft.firstLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(0, 0, 0)
+//                                .addComponent(secondLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(0, 0, 0)
+//                                .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(0, 0, Short.MAX_VALUE))
+//        );
+//        layout.setVerticalGroup(
+//                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addComponent(firstLeft.firstLeftPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                        .addGroup(layout.createSequentialGroup()
+//                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                                        .addComponent(secondLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                        .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+//                                .addGap(0, 0, Short.MAX_VALUE))
+//        );
+
+
     }
 
     public static int studyDuration;

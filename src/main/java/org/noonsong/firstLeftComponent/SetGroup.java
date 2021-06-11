@@ -23,14 +23,14 @@ public class SetGroup {
         group.setMinimumSize(new Dimension(50, 50));
         group.setPreferredSize(new Dimension(50, 50));
 
-        group.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                groupActionPerformed(evt);
-            }
-        });
+//        group.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent evt) {
+//                groupActionPerformed(evt);
+//            }
+//        });
     }
-    private void groupActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here: 클릭하면 해당 스터디 그룹으로 가게 됨
-        // 
-    }
+//    private void groupActionPerformed(ActionEvent evt) {
+//        // TODO add your handling code here: 클릭하면 해당 스터디 그룹으로 가게 됨
+//        //
+//    }
 }

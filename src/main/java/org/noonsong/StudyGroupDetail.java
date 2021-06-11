@@ -287,7 +287,7 @@ public class StudyGroupDetail extends JDialog {
         sdImagePanel.setBackground(new Color(255, 255, 255));
 
 //        sdImageLabel.setIcon(new ImageIcon(getClass().getResource("/front/img/dev_group.jpg"))); // NOI18N
-        sdImageLabel.setIcon(new ImageIcon("img/dev_group.jpg")); // NOI18N
+        sdImageLabel.setIcon(new ImageIcon("src/img/dev_group.jpg")); // NOI18N
         sdImageLabel.setText("개발그룹 대표이미지 대체 텍스트");
         sdImageLabel.setMaximumSize(new Dimension(219, 80));
         sdImageLabel.setMinimumSize(new Dimension(219, 80));

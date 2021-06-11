@@ -15,6 +15,7 @@ public class SetGroupPanel {
         groupPanel.setPreferredSize(new Dimension(50, 250));
 
         GroupLayout groupPanelLayout = new GroupLayout(groupPanel);
+
         groupPanel.setLayout(groupPanelLayout);
         groupPanelLayout.setHorizontalGroup(
                 groupPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)

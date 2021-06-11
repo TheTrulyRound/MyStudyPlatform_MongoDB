@@ -4,15 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.lang.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.mongodb.client.model.Filters.eq;
 import com.mongodb.client.*;
-import org.bson.BsonArray;
 import org.bson.Document;
-
-import org.noonsong.secondLeftComponent.SetHeaderFirst;
 
 public class LoginWindow extends JFrame implements ActionListener {
 
@@ -22,9 +18,9 @@ public class LoginWindow extends JFrame implements ActionListener {
     static JTextField loginUsernameTF;
     static JPasswordField loginPasswordTF;
     static JButton loginB, signInB, findPasswordB;
-    static Boolean loginSuccess;
-    public static String userId;
-    public static Document userDoc;
+    public static Boolean loginSuccess;
+    public static String userId;    // 로그인된 유저의 다큐먼트 아이디
+    public static Document userDoc; // 로그인된 유저의 정보가 담긴 다큐먼트
 
     // 회원가입에 관한 객체들 선언
     static JPanel signInP, signInInputP, signInButtonP;
@@ -196,16 +192,10 @@ public class LoginWindow extends JFrame implements ActionListener {
                 userId = realUsername.get("username").toString();
                 userDoc = user_info_col.find(eq("username", inputUsername)).first();
 
-                /*
-                Object hi = realUsername.get("joinedGroup");
-                System.out.println("before: "+hi);
-                ArrayList<String> joinedGroup = (ArrayList<String>) hi;
-                joinedGroup.add("Korean");
-                System.out.println("after: "+joinedGroup);
-                */
                 loginResultL.setText("로그인 성공: "+userId);
                 loginResultL.setForeground(Color.green);
                 loginSuccess = true;
+                System.out.println("doc: "+LoginWindow.userDoc);
             }
         } else {
             loginResultL.setText("로그인 실패. 유저네임 또는 비밀번호가 틀렸습니다.");
@@ -288,7 +278,7 @@ public class LoginWindow extends JFrame implements ActionListener {
 
             if (loginSuccess) {
                 dispose();  // 로그인창만 닫기
-                new MakeStudy();
+                new Background();
                 System.out.println("User ID: "+ LoginWindow.userId);  // 로그인 되면 유저 아이디 출력
             }
         }
@@ -324,6 +314,7 @@ public class LoginWindow extends JFrame implements ActionListener {
             catch (Exception ex) { System.out.println("서버 접속 실패."); }
 
             signInP.setVisible(false);
+            loginP.setVisible(true);
         }
     }
 }
