@@ -1,6 +1,8 @@
 package org.noonsong.firstLeftComponent;
 
 import org.noonsong.Background;
+import org.noonsong.Mypage;
+import org.noonsong.Mypage;
 import org.noonsong.Explore;
 import org.noonsong.MakeStudy;
 import org.noonsong.StudyRoom;
@@ -9,6 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import static org.noonsong.Background.*;
 
 public class SetFirstLeftPanel implements ActionListener{
 
@@ -50,7 +54,6 @@ public class SetFirstLeftPanel implements ActionListener{
                                 .addGroup(firstLeftPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addGroup(firstLeftPanelLayout.createSequentialGroup()
                                                 .addGap(11, 11, 11)
-//                                                .addComponent(my.myBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                                 .addComponent(myBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                         .addGroup(firstLeftPanelLayout.createSequentialGroup()
                                                 .addContainerGap()
@@ -58,9 +61,7 @@ public class SetFirstLeftPanel implements ActionListener{
                                         .addGroup(firstLeftPanelLayout.createSequentialGroup()
                                                 .addContainerGap()
                                                 .addGroup(firstLeftPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//                                                        .addComponent(plus.plusBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(plusBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-//                                                        .addComponent(expl.exploreBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
                                                         .addComponent(exploreBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
                                 .addContainerGap(11, Short.MAX_VALUE))
         );
@@ -68,15 +69,12 @@ public class SetFirstLeftPanel implements ActionListener{
                 firstLeftPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(firstLeftPanelLayout.createSequentialGroup()
                                 .addGap(11, 11, 11)
-//                                .addComponent(my.myBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(myBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addGap(15, 15, 15)
                                 .addComponent(groupPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, 0)
-//                                .addComponent(plus.plusBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(plusBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addGap(10, 10, 10)
-//                                .addComponent(expl.exploreBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addComponent(exploreBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -135,30 +133,119 @@ public class SetFirstLeftPanel implements ActionListener{
                                 .addGap(10, 10, 10))
         );
     }
+    public static int tracker = 4;
+    public static Explore explorePanel = new Explore();
+    public static MakeStudy makeStudyPanel = new MakeStudy();
+    public static Mypage myPagePanel = new Mypage();
+
     public void actionPerformed(ActionEvent evt) {
         Component component = (Component) evt.getSource();
         JFrame frame = (JFrame) SwingUtilities.getRoot(component);
-        frame.dispose(); // 현재 프레임 삭제
+        frame.remove(rightPanel); // 현재 프레임 삭제
 
         if(evt.getSource() == exploreBtn) {
-            new Explore();                // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
+//TODO 찾기 아직 패널화 안함
+            Background.allLayout(explorePanel);
             ecount += 1;
             System.out.println("if 문 안의 exploreBtn 실행: " + ecount);
+            System.out.println("tracker: : "+ tracker);
+            switch (tracker){
+                case 1:
+                    explorePanel.setVisible(true);
+                    System.out.println("탐색 페이지 보이게해라 ");
+                    break;
+                case 2:
+                    makeStudyPanel.setVisible(false);
+                    System.out.println("스터디 생성 페이지 안보이게해라 ");
+                    break;
+                case 3:
+                    System.out.println("스터디룸 안보이게해라 ");
+                    break;
+                case 4:
+                    myPagePanel.setVisible(false);
+                    System.out.println("마이 페이지 안보이게해라 ");
+                    break;
+            } tracker = 1;
         }else if(evt.getSource() == plusBtn) {
-            new MakeStudy();                // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
+            //패널화함
+            // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
+            Background.allLayout(makeStudyPanel);
             pcount += 1;
-            System.out.println("if문 안의 plusBtn 실행: " + pcount);
+            System.out.println("if문 안의 plusBtn 실행: " + pcount );
+            System.out.println("tracker: : "+ tracker);
+            switch (tracker){
+                case 1:
+                    explorePanel.setVisible(false);
+//                    mainFrame.remove(explorePanel);
+                    System.out.println("탐색 페이지 안보이게해라 ");
+                    break;
+                case 2:
+                    makeStudyPanel.setVisible(true);
+                    System.out.println("스터디 생성 페이지 보이게해라 ");
+                    break;
+                case 3:
+                    System.out.println("스터디룸 안보이게해라 ");
+                    break;
+                case 4:
+                    myPagePanel.setVisible(false);
+                    System.out.println("마이 페이지 안보이게해라 ");
+                    break;
+            }tracker=2;
         }else if(evt.getSource() == group){
+            //ToDO 스터디룸 패널화 안함
             new StudyRoom();                // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
             scount += 1;
             System.out.println("if 문 안의 group 버튼 실행: " + scount);
+            System.out.println("tracker: : "+ tracker);
+            switch (tracker){
+                case 1:
+                    explorePanel.setVisible(false);
+//                    mainFrame.remove(explorePanel);
+                    System.out.println("탐색 페이지 안보이게해라 ");
+                    break;
+                case 2:
+                    makeStudyPanel.setVisible(false);
+//                    mainFrame.remove(makeStudyPanel);
+                    System.out.println("스터디 생성 페이지 안보이게해라 ");
+                    break;
+                case 3:
+                    System.out.println("스터디룸 보이게 해라 ");
+                    break;
+                case 4:
+                    myPagePanel.setVisible(false);
+                    System.out.println("마이 페이지 안보이게해라 ");
+                    break;
+            }tracker=3;
         }
         else {
-            new Background();                // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
+            //TODO 백그라운드 패널화 안함
+            // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
             bcount += 1;
             System.out.println("if 문 안의 myBtn 실행: " + bcount);
+            System.out.println("tracker: : "+ tracker);
+            switch (tracker){
+                case 1:
+                    explorePanel.setVisible(false);
+//                    mainFrame.remove(explorePanel);
+                    System.out.println("탐색 페이지 보이게해라 ");
+                    break;
+                case 2:
+                    makeStudyPanel.setVisible(false);
+                    System.out.println("스터디 생성 페이지 안보이게해라 ");
+                    break;
+                case 3:
+                    System.out.println("스터디룸 안보이게해라 ");
+                    break;
+                case 4:
+                    myPagePanel.setVisible(true);
+                    System.out.println("마이 페이지 보이게해라 ");
+                    break;
+            }tracker=4;
         }
+        rightPanel.updateUI();
 
     }
+
+
 
 }
