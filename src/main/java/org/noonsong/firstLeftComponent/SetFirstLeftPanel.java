@@ -137,107 +137,128 @@ public class SetFirstLeftPanel implements ActionListener{
     public static Explore explorePanel = new Explore();
     public static MakeStudy makeStudyPanel = new MakeStudy();
     public static Mypage myPagePanel = new Mypage();
+    public static StudyRoom roomPanel = new StudyRoom();
 
     public void actionPerformed(ActionEvent evt) {
-        Component component = (Component) evt.getSource();
-        JFrame frame = (JFrame) SwingUtilities.getRoot(component);
-        frame.remove(rightPanel); // 현재 프레임 삭제
+//        Component component = (Component) evt.getSource();
+//        JFrame frame = (JFrame) SwingUtilities.getRoot(component);
+//        frame.remove(rightPanel); // 현재 프레임 삭제
 
         if(evt.getSource() == exploreBtn) {
 //TODO 찾기 아직 패널화 안함
-            Background.allLayout(explorePanel);
+            Background.allLayout(explorePanel,explorePanel.secondLeftPanel);
             ecount += 1;
             System.out.println("if 문 안의 exploreBtn 실행: " + ecount);
             System.out.println("tracker: : "+ tracker);
             switch (tracker){
                 case 1:
                     explorePanel.setVisible(true);
+                    explorePanel.secondLeftPanel.setVisible(true);
                     System.out.println("탐색 페이지 보이게해라 ");
                     break;
                 case 2:
                     makeStudyPanel.setVisible(false);
+                    makeStudyPanel.secondLeftPanel.setVisible(false);
+
                     System.out.println("스터디 생성 페이지 안보이게해라 ");
                     break;
                 case 3:
+                    roomPanel.setVisible(false);
+                    roomPanel.secondLeftPanel.setVisible(false);
                     System.out.println("스터디룸 안보이게해라 ");
                     break;
                 case 4:
                     myPagePanel.setVisible(false);
+                    myPagePanel.secondLeftPanel.setVisible(false);
                     System.out.println("마이 페이지 안보이게해라 ");
                     break;
             } tracker = 1;
         }else if(evt.getSource() == plusBtn) {
             //패널화함
             // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
-            Background.allLayout(makeStudyPanel);
+            Background.allLayout(makeStudyPanel,makeStudyPanel.secondLeftPanel);
             pcount += 1;
             System.out.println("if문 안의 plusBtn 실행: " + pcount );
             System.out.println("tracker: : "+ tracker);
             switch (tracker){
                 case 1:
                     explorePanel.setVisible(false);
+                    explorePanel.secondLeftPanel.setVisible(false);
 //                    mainFrame.remove(explorePanel);
                     System.out.println("탐색 페이지 안보이게해라 ");
                     break;
                 case 2:
                     makeStudyPanel.setVisible(true);
+                    makeStudyPanel.secondLeftPanel.setVisible(true);
                     System.out.println("스터디 생성 페이지 보이게해라 ");
                     break;
                 case 3:
+                    roomPanel.setVisible(false);
+                    roomPanel.secondLeftPanel.setVisible(false);
                     System.out.println("스터디룸 안보이게해라 ");
                     break;
                 case 4:
                     myPagePanel.setVisible(false);
+                    myPagePanel.secondLeftPanel.setVisible(false);
                     System.out.println("마이 페이지 안보이게해라 ");
                     break;
             }tracker=2;
         }else if(evt.getSource() == group){
-            //ToDO 스터디룸 패널화 안함
-            new StudyRoom();                // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
+            Background.allLayout(roomPanel,roomPanel.secondLeftPanel);                // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
             scount += 1;
             System.out.println("if 문 안의 group 버튼 실행: " + scount);
             System.out.println("tracker: : "+ tracker);
             switch (tracker){
                 case 1:
                     explorePanel.setVisible(false);
+                    explorePanel.secondLeftPanel.setVisible(false);
 //                    mainFrame.remove(explorePanel);
                     System.out.println("탐색 페이지 안보이게해라 ");
                     break;
                 case 2:
                     makeStudyPanel.setVisible(false);
+                    makeStudyPanel.secondLeftPanel.setVisible(false);
 //                    mainFrame.remove(makeStudyPanel);
                     System.out.println("스터디 생성 페이지 안보이게해라 ");
                     break;
                 case 3:
+                    roomPanel.setVisible(true);
+                    roomPanel.secondLeftPanel.setVisible(true);
                     System.out.println("스터디룸 보이게 해라 ");
                     break;
                 case 4:
                     myPagePanel.setVisible(false);
+                    myPagePanel.secondLeftPanel.setVisible(false);
                     System.out.println("마이 페이지 안보이게해라 ");
                     break;
             }tracker=3;
         }
         else {
-            //TODO 백그라운드 패널화 안함
             // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
+            Background.allLayout(myPagePanel,myPagePanel.secondLeftPanel);
             bcount += 1;
             System.out.println("if 문 안의 myBtn 실행: " + bcount);
             System.out.println("tracker: : "+ tracker);
             switch (tracker){
                 case 1:
                     explorePanel.setVisible(false);
+                    explorePanel.secondLeftPanel.setVisible(false);
 //                    mainFrame.remove(explorePanel);
                     System.out.println("탐색 페이지 보이게해라 ");
                     break;
                 case 2:
                     makeStudyPanel.setVisible(false);
+                    makeStudyPanel.secondLeftPanel.setVisible(false);
                     System.out.println("스터디 생성 페이지 안보이게해라 ");
                     break;
                 case 3:
+                    roomPanel.setVisible(false);
+                    roomPanel.secondLeftPanel.setVisible(false);
                     System.out.println("스터디룸 안보이게해라 ");
                     break;
                 case 4:
                     myPagePanel.setVisible(true);
+                    myPagePanel.secondLeftPanel.setVisible(true);
                     System.out.println("마이 페이지 보이게해라 ");
                     break;
             }tracker=4;

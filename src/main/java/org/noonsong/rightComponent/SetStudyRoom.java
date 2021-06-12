@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SetStudyRoom {
+
     public static JPanel rightPanel = new JPanel();
     public static SetBodyHeader hbody = new SetBodyHeader("1주차 과제함");
     public static SetFooter foot = new SetFooter("과제 작성 하기");

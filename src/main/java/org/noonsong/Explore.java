@@ -13,7 +13,7 @@ public class Explore extends JPanel{
     public static SetFirstLeftPanel firstLeft = new SetFirstLeftPanel();
     public static JPanel secondLeftPanel = new JPanel();
 //    public static JPanel rightPanel = new JPanel();
-    SetHeaderFirst hSearch = new SetHeaderFirst("찾기");
+    public static SetHeaderFirst hSearch = new SetHeaderFirst("찾기");
     ExploreMenu searchMenu = new ExploreMenu();
 
     JPanel banner,searchPanel,exploreView,studyIntro;
@@ -353,28 +353,6 @@ public class Explore extends JPanel{
                                 .addGap(20, 20, 20)
                                 .addComponent(explorePane, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))
         );
-
-//        GroupLayout layout = new GroupLayout(getContentPane());
-//        getContentPane().setLayout(layout);
-//        layout.setHorizontalGroup(
-//                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//                        .addGroup(layout.createSequentialGroup()
-//                                .addComponent(firstLeft.firstLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-//                                .addGap(0, 0, 0)
-//                                .addComponent(secondLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-//                                .addGap(0, 0, 0)
-//                                .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-//                                .addGap(0, 0, Short.MAX_VALUE))
-//        );
-//        layout.setVerticalGroup(
-//                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//                        .addComponent(firstLeft.firstLeftPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-//                        .addGroup(layout.createSequentialGroup()
-//                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//                                        .addComponent(secondLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-//                                        .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-//                                .addGap(0, 0, Short.MAX_VALUE))
-//        );
 
 
     }
