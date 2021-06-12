@@ -1,5 +1,7 @@
 package org.noonsong;
 
+import com.mongodb.client.*;
+import org.bson.Document;
 import org.noonsong.firstLeftComponent.SetFirstLeftPanel;
 import org.noonsong.secondLeftComponent.ExploreMenu;
 import org.noonsong.secondLeftComponent.SetHeaderFirst;
@@ -7,38 +9,46 @@ import org.noonsong.secondLeftComponent.SetHeaderFirst;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
-public class Explore extends JFrame{
+import static com.mongodb.client.model.Filters.eq;
+
+public class Explore extends JPanel {
     public static SetFirstLeftPanel firstLeft = new SetFirstLeftPanel();
     public static JPanel secondLeftPanel = new JPanel();
-    public static JPanel rightPanel = new JPanel();
+    //    public static JPanel rightPanel = new JPanel();
     SetHeaderFirst hSearch = new SetHeaderFirst("찾기");
     ExploreMenu searchMenu = new ExploreMenu();
 
-    JPanel banner,searchPanel,exploreView,studyIntro;
-    JLabel bannerImg,categoryVar,studyName,studyImg;
+    JPanel banner, searchPanel, exploreView, studyIntro;
+    JLabel bannerImg, categoryVar, studyName, studyImg;
     JTextField searchTextFiled;
     JScrollPane explorePane;
-    JLayeredPane bannerLayer,studyPreview;
+    JLayeredPane bannerLayer, studyPreview;
     JTextPane studyIntroW;
     JButton studyMore;
 
 
     public Explore() {
-        MakeStudy.count += 1;
-        System.out.println("탐색 이니셜라이저 실행: " + MakeStudy.count);
-
-        setTitle("눈송보드 > 그룹 찾기 ");
         initComponents();
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(1030, 600));
-        setLocationRelativeTo(null);
+//        setMinimumSize(new Dimension(1030, 600));
+        setMinimumSize(new Dimension(716, 600));
+//        setLocationRelativeTo(null);
         setVisible(true);
-        pack();
+//        pack();
     }
 
+    public static int count;
+
     public void initComponents() {
+        count += 1;
+        System.out.println("Explore 이니셜라이저 실행: " + count);
+
         bannerLayer = new JLayeredPane();
         banner = new JPanel();
         bannerImg = new JLabel();
@@ -53,6 +63,7 @@ public class Explore extends JFrame{
         studyIntroW = new JTextPane();
         studyMore = new JButton();
         studyImg = new JLabel();
+
 //        StudyDetailDialog detail = new StudyDetailDialog();
 
         //secondLeftPanel 레이아웃
@@ -78,14 +89,15 @@ public class Explore extends JFrame{
         secondLeftPanelLayout.setVerticalGroup(
                 secondLeftPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(secondLeftPanelLayout.createSequentialGroup()
-                                .addGap(0,0,0)
-                                .addComponent(hSearch.headerFirst,GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(hSearch.headerFirst, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(secondLeftPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(hSearch.headerLine, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(searchMenu.exploreMenu, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(335, Short.MAX_VALUE))
         );
+
 
         bannerLayer.setBackground(new Color(64, 80, 255));
         bannerLayer.setPreferredSize(new Dimension(690, 215));
@@ -94,12 +106,12 @@ public class Explore extends JFrame{
         banner.setPreferredSize(new Dimension(690, 215));
 
         //문제 : 배너이미지 생성안되면서 그 위에 붙이는 텍스트필드패널 작동안함.
-        bannerImg.setIcon(new ImageIcon("src/img/SB_DeepBlue.png")); // NOI18N
+        bannerImg.setIcon(new ImageIcon("src/img/SB_DeepBlue_thin.png")); // NOI18N
         bannerImg.setText("배너이미지 대체 텍스트");
         bannerImg.setIconTextGap(0);
-        bannerImg.setMaximumSize(new Dimension(690, 215));
-        bannerImg.setMinimumSize(new Dimension(690, 215));
-        bannerImg.setPreferredSize(new Dimension(690, 215));
+        bannerImg.setMaximumSize(new Dimension(690, 168));
+        bannerImg.setMinimumSize(new Dimension(690, 168));
+        bannerImg.setPreferredSize(new Dimension(690, 168));
 
         GroupLayout bannerLayout = new GroupLayout(banner);
         banner.setLayout(bannerLayout);
@@ -120,31 +132,21 @@ public class Explore extends JFrame{
 
         searchPanel.setBackground(new Color(64, 80, 255));
 
-        searchTextFiled.setBackground(new Color(64, 80, 255));
-        searchTextFiled.setFont(new Font("굴림", 1, 14)); // NOI18N
-        searchTextFiled.setForeground(new Color(255, 255, 255));
-        searchTextFiled.setHorizontalAlignment(JTextField.CENTER);
-        searchTextFiled.setText("원하는 스터디 그룹을 찾아보세요.");
-        searchTextFiled.setBorder(null);
-        searchTextFiled.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                searchTextFiledActionPerformed(evt);
-            }
-        });
-
         GroupLayout searchPanelLayout = new GroupLayout(searchPanel);
         searchPanel.setLayout(searchPanelLayout);
         searchPanelLayout.setHorizontalGroup(
                 searchPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGap(0, 240, Short.MAX_VALUE)
                         .addGroup(searchPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(searchTextFiled, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
+                                //.addComponent(searchTextFiled, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                        )
         );
         searchPanelLayout.setVerticalGroup(
                 searchPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGap(0, 38, Short.MAX_VALUE)
                         .addGroup(searchPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(searchTextFiled, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE))
+                                //.addComponent(searchTextFiled, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                        )
         );
 
         bannerLayer.setLayer(banner, JLayeredPane.DEFAULT_LAYER);
@@ -178,28 +180,29 @@ public class Explore extends JFrame{
         );
 
         // 검색 결과 뜨는패널
-        explorePane.setBackground(new Color(255, 255, 255));
+        explorePane.setBackground(new Color(255, 255, 255, 000));
         explorePane.setBorder(null);
         explorePane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         explorePane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         explorePane.setMinimumSize(new Dimension(716, 300));
         explorePane.setPreferredSize(new Dimension(716, 300));
 
-        exploreView.setBackground(new Color(255, 255, 255));
+        exploreView.setBackground(new Color(255, 255, 255, 000));
         exploreView.setMinimumSize(new Dimension(716, 700));
         exploreView.setPreferredSize(new Dimension(716, 700));
 
-        categoryVar.setFont(new Font("돋움", 1, 20)); // NOI18N
+//        categoryVar.setFont(new Font("돋움", 1, 20)); // NOI18N
+//
+//        //TODO 카테고리 버튼 누르는 값에 따라 값 변화 필요
+//        categoryVar.setText("ALL");
+//
+//        categoryVar.setToolTipText("");
+//        categoryVar.setHorizontalTextPosition(SwingConstants.RIGHT);
+//        categoryVar.setInheritsPopupMenu(false);
+//        categoryVar.setMaximumSize(new Dimension(170, 57));
+//        categoryVar.setMinimumSize(new Dimension(170, 57));
+//        categoryVar.setPreferredSize(new Dimension(170, 57));
 
-        //TODO 카테고리 버튼 누르는 값에 따라 값 변화 필요
-        categoryVar.setText("ALL");
-
-        categoryVar.setToolTipText("");
-        categoryVar.setHorizontalTextPosition(SwingConstants.RIGHT);
-        categoryVar.setInheritsPopupMenu(false);
-        categoryVar.setMaximumSize(new Dimension(170, 57));
-        categoryVar.setMinimumSize(new Dimension(170, 57));
-        categoryVar.setPreferredSize(new Dimension(170, 57));
 
         //스터디 그룹 미리보기 패널
         studyPreview.setBorder(BorderFactory.createEtchedBorder());
@@ -208,60 +211,6 @@ public class Explore extends JFrame{
         studyIntro.setBackground(new Color(255, 255, 255));
         studyIntro.setMinimumSize(new Dimension(330, 145));
         studyIntro.setPreferredSize(new Dimension(330, 145));
-
-        //TODO 데이터 값에 따라 아래 StudyName.setText값 변경 필요.
-        //스터디그룹 미리보기 패널 - 스터디 이름
-        studyName.setFont(new Font("돋움", 0, 14)); // NOI18N
-        studyName.setText("2021-자바 개발 스터디");
-        studyName.setPreferredSize(new Dimension(180, 20));
-
-        //TODO 데이터 값에 따라 아래 StudyIntroW.setText값 변경 필요.
-        //스터디그룹 미리보기 패널 - 스터디 소개 간략
-        studyIntroW.setEditable(false);
-        studyIntroW.setText("세 달 동안 Java를 사용해서 함께 앱 개발 스터디 하실 분 모집합니다. 매주 금요일마다 스터디 결과를 제출하도록 할 예정입니다.");
-
-
-        //TODO 데이터 값에 따라 아래 StudyMore 버튼누르면 해당 스터디 상세보기 패널로 이동
-        //스터디그룹 미리보기 패널 - 스터디 소개 간략
-        studyMore.setBackground(new Color(238, 241, 244));
-        studyMore.setText("더보기");
-        studyMore.setBorder(null);
-        studyMore.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                studyMoreActionPerformed(evt);
-            }
-        });
-
-        //스터디 미리보기 전체 패널에 각 요소 붙여넣는 레이아웃
-        GroupLayout studyIntroLayout = new GroupLayout(studyIntro);
-        studyIntro.setLayout(studyIntroLayout);
-        studyIntroLayout.setHorizontalGroup(
-                studyIntroLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(GroupLayout.Alignment.TRAILING, studyIntroLayout.createSequentialGroup()
-                                .addGroup(studyIntroLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                        .addGroup(studyIntroLayout.createSequentialGroup()
-                                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(studyMore, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(studyIntroLayout.createSequentialGroup()
-                                                .addGap(15, 15, 15)
-                                                .addGroup(studyIntroLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                        .addGroup(studyIntroLayout.createSequentialGroup()
-                                                                .addComponent(studyName, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(0, 0, Short.MAX_VALUE))
-                                                        .addComponent(studyIntroW, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
-                                .addGap(15, 15, 15))
-        );
-        studyIntroLayout.setVerticalGroup(
-                studyIntroLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(studyIntroLayout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(studyName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(studyIntroW, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(studyMore, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(20, Short.MAX_VALUE))
-        );
 
         studyImg.setIcon(new ImageIcon("src/img/dev_group.jpg")); // NOI18N
         studyImg.setText("그룹 대표 이미지 대체 텍스트");
@@ -287,48 +236,73 @@ public class Explore extends JFrame{
                                 .addComponent(studyIntro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         );
 
+        // TODO J테이블 생성
+        if (LoginWindow.loginSuccess != null && LoginWindow.loginSuccess.equals(true)) {
+            String connectionString = "mongodb+srv://studyplatform:studyplatform@studyplatformcluster.msr51.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+            try (MongoClient mongoClient = MongoClients.create(connectionString)) {
+                MongoDatabase study_group_info = mongoClient.getDatabase("study_group_info");
+                MongoCollection<Document> study_group_info_col = study_group_info.getCollection("groups");
 
-        GroupLayout exploreViewLayout = new GroupLayout(exploreView);
-        exploreView.setLayout(exploreViewLayout);
-        exploreViewLayout.setHorizontalGroup(
-                exploreViewLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(exploreViewLayout.createSequentialGroup()
-                                .addGap(25, 25, 25)
-                                .addGroup(exploreViewLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addGroup(exploreViewLayout.createSequentialGroup()
-                                                .addComponent(studyPreview, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(studyPreview, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(categoryVar, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(exploreViewLayout.createSequentialGroup()
-                                                .addComponent(studyPreview, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(studyPreview, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-                                .addGap(17, 17, Short.MAX_VALUE))
-        );
-        exploreViewLayout.setVerticalGroup(
-                exploreViewLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(exploreViewLayout.createSequentialGroup()
-                                .addComponent(categoryVar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)
-                                .addGroup(exploreViewLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(studyPreview, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(studyPreview, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                .addGap(15, 15, 15)
-                                .addGroup(exploreViewLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(studyPreview, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(studyPreview, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(53, Short.MAX_VALUE))
-        );
+                FindIterable<Document> iterable = study_group_info_col.find();
+                MongoCursor<Document> cursor = iterable.iterator();
+
+                ArrayList<Document> allStudies = new ArrayList<>();
+                try {
+                    while (cursor.hasNext()) {
+                        allStudies.add(cursor.next());
+                    }
+                } finally {
+                    cursor.close();
+                }
+
+                JTable studyTable;
+                String[] columnNames = {"스터디 이름", "스터디 설명"};
+                Object[][] rowData = {{"스터디 이름", "스터디 설명"}};
+                DefaultTableModel defaultTableModel;
+
+                // TODO 가져온 스터디 다큐먼트들 정보를 사용해서 테이블 생성
+                defaultTableModel = new DefaultTableModel(rowData, columnNames);
+                for (Document allStudy : allStudies) {
+                    String title = (String) allStudy.get("title");
+                    String intro = (String) allStudy.get("intro");
+                    defaultTableModel.addRow(new Object[]{title, intro});
+                }
+                defaultTableModel.setColumnIdentifiers(columnNames);
+                studyTable = new JTable(defaultTableModel);
+
+                TableColumnModel columnModel = studyTable.getColumnModel();
+                columnModel.getColumn(0).setPreferredWidth(150);
+                columnModel.getColumn(1).setPreferredWidth(400);
+
+                JButton studyDetailBtn = new JButton("상세보기");
+                studyDetailBtn.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        int rowIndex = studyTable.getSelectedRow();
+                        if (rowIndex == -1) {
+                            return;
+                        } else {
+                            // 해당 그룹에 대한 studyRoomDetail 창 띄우기
+                            System.out.println("클릭잘됨: 인덱스 " + rowIndex);
+                            new StudyGroupDetail((String) studyTable.getModel().getValueAt(rowIndex, 0));
+                        }
+                    }
+                });
+
+                exploreView.add(studyTable);
+                exploreView.add(studyDetailBtn);
+            } catch (Exception ex) {
+                System.out.println("Explore - JTable 생성 중 서버 접속 실패");
+            }
+        }
 
         explorePane.setViewportView(exploreView);
 
-        rightPanel.setBackground(new Color(255, 255, 255));
-        rightPanel.setMinimumSize(new Dimension(716, 600));
-        rightPanel.setPreferredSize(new Dimension(716, 600));
-        GroupLayout rightPanelLayout = new GroupLayout(rightPanel);
+        this.setBackground(new Color(255, 255, 255));
+        this.setMinimumSize(new Dimension(716, 600));
+        this.setPreferredSize(new Dimension(716, 600));
+        GroupLayout rightPanelLayout = new GroupLayout(this);
 
-        rightPanel.setLayout(rightPanelLayout);
+        this.setLayout(rightPanelLayout);
         rightPanelLayout.setHorizontalGroup(
                 rightPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(rightPanelLayout.createSequentialGroup()
@@ -348,41 +322,26 @@ public class Explore extends JFrame{
                                 .addComponent(explorePane, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))
         );
 
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(firstLeft.firstLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(secondLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(firstLeft.firstLeftPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(secondLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
-
+//        GroupLayout layout = new GroupLayout(getContentPane());
+//        getContentPane().setLayout(layout);
+//        layout.setHorizontalGroup(
+//                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addGroup(layout.createSequentialGroup()
+//                                .addComponent(firstLeft.firstLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(0, 0, 0)
+//                                .addComponent(secondLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(0, 0, 0)
+//                                .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(0, 0, Short.MAX_VALUE))
+//        );
+//        layout.setVerticalGroup(
+//                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                        .addComponent(firstLeft.firstLeftPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                        .addGroup(layout.createSequentialGroup()
+//                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                                        .addComponent(secondLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+//                                        .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+//                                .addGap(0, 0, Short.MAX_VALUE))
+//        );
     }
-
-    private void studyMoreActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-    private void footerBtnDialogActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void searchTextFiledActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-
 }

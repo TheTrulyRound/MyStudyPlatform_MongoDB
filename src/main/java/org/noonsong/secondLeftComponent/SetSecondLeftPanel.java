@@ -19,7 +19,6 @@ public class SetSecondLeftPanel {
         SetHw hw = new SetHw();
         SetTalkCh talk = new SetTalkCh();
 
-
         //레이아웃/.건들필요없음
         GroupLayout secondLeftPanelLayout = new GroupLayout(secondLeftPanel);
         secondLeftPanel.setLayout(secondLeftPanelLayout);

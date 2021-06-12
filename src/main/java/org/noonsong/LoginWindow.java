@@ -183,7 +183,7 @@ public class LoginWindow extends JFrame implements ActionListener {
         String inputUsername = loginUsernameTF.getText();
         String inputPassword = String.valueOf(loginPasswordTF.getPassword());
         // ID 중복 확인
-        
+
         Document realUsername = user_info_col.find(eq("username", inputUsername)).first();
         Document realPassword = user_info_col.find(eq("password", inputPassword)).first();
 
@@ -266,6 +266,13 @@ public class LoginWindow extends JFrame implements ActionListener {
         return resultString;
     }
 
+    // 페이지 트래커 + 로그인 성공과 함께 생성해줄 패널들
+    public static int tracker = -1;
+    public static Explore explorePanel;
+    public static MakeStudy makeStudyPanel;
+    public static MyPage myPagePanel;
+    public static StudyRoom roomPanel;
+
     public void actionPerformed(ActionEvent e) {
         // TODO 로그인 하기
         if (e.getSource() == loginB) {
@@ -278,7 +285,16 @@ public class LoginWindow extends JFrame implements ActionListener {
 
             if (loginSuccess) {
                 dispose();  // 로그인창만 닫기
+                tracker = 1;
                 new Background();
+                explorePanel = new Explore();
+                makeStudyPanel = new MakeStudy();
+                myPagePanel = new MyPage();
+
+                explorePanel.setVisible(true);
+                makeStudyPanel.setVisible(false);
+                myPagePanel.setVisible(false);
+
                 System.out.println("User ID: "+ LoginWindow.userId);  // 로그인 되면 유저 아이디 출력
             }
         }

@@ -1,12 +1,21 @@
 package org.noonsong;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 import org.noonsong.rightComponent.SetFooter;
 import org.noonsong.secondLeftComponent.SetHeaderFirst;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.*;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class StudyGroupDetail extends JDialog {
     //TODO 팝업형식으로 띄울 준비하길, 리팩토링 필요
@@ -24,7 +33,7 @@ public class StudyGroupDetail extends JDialog {
             joinNowLabel,joinNowNum,defaultProfile,leaderLabel,leaderName;
     JTextArea studyDetailSecondR;
 
-    public StudyGroupDetail(){
+    public StudyGroupDetail(String groupName){
         StudyGroupDetailDialog = new JDialog();
         secondLeftPanel = new JPanel();
         sdNamePanel = new JPanel();
@@ -49,6 +58,43 @@ public class StudyGroupDetail extends JDialog {
         studyDetailSecondR = new JTextArea();
         secondLeftPanel = new JPanel();
 
+        String intro = "";
+        String leader = "";
+
+        //Logger.getLogger("org.mongodb.driver").setLevel(Level.WARNING);
+        String connectionString = "mongodb+srv://studyplatform:studyplatform@studyplatformcluster.msr51.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+        try (MongoClient mongoClient = MongoClients.create(connectionString)) {
+            MongoDatabase study_group_info = mongoClient.getDatabase("study_group_info");
+            MongoCollection<Document> study_group_info_col = study_group_info.getCollection("groups");
+
+            MongoDatabase user_info = mongoClient.getDatabase("user_info");
+            MongoCollection<Document> user_info_col = user_info.getCollection("0");
+
+            // TODO 이름이 받은 그룹명인 애를 통째로 가져오기
+            Document groupInfo = study_group_info_col.find(eq("title", groupName)).first();
+            intro = (String) groupInfo.get("intro");
+            leader = (String) groupInfo.get("leader");
+            System.out.println(intro);
+
+//            // TODO 내 멤버 정보 업데이트
+//            Object doc = LoginWindow.userDoc.get("joinedGroup");        // 현재 조인된 그룹의 오브젝트 가져오기
+//            ArrayList<String> joinedGroup = (ArrayList<String>) doc;    // 오브젝트 타입 변환
+//            joinedGroup.add(MakeStudy.studyNameW.getText());            // 새로 만든 그룹을 리스트에 추가
+//            System.out.println(joinedGroup);                            // 소속된 그룹 리스트 출력
+//
+//            Document new_account_info = new Document();
+//            new_account_info.append("username", LoginWindow.userDoc.get("username"));
+//            new_account_info.append("password", LoginWindow.userDoc.get("password"));
+//            new_account_info.append("email", LoginWindow.userDoc.get("email"));
+//            new_account_info.append("joinedGroup", joinedGroup);
+//
+//            user_info_col.replaceOne(eq("_id", LoginWindow.userDoc.get("_id")), new_account_info);
+//            LoginWindow.userDoc = new_account_info;
+
+            // TODO 새로 생성된 페이지로 바로 가기
+
+        }
+        catch (Exception ex) { System.out.println("서버 접속 실패."); }
 
         secondLeftPanel.setBackground(new Color(238, 241, 244));
         secondLeftPanel.setMinimumSize(new Dimension(242, 600));
@@ -77,7 +123,7 @@ public class StudyGroupDetail extends JDialog {
         sdNamePanel.setMinimumSize(new Dimension(226, 40));
 
         sdName.setFont(new Font("돋움", 1, 18)); // NOI18N
-        sdName.setText("2021-자바 개발 스터디");
+        sdName.setText(groupName);
         sdName.setMaximumSize(new Dimension(178, 40));
         sdName.setMinimumSize(new Dimension(178, 40));
         sdName.setPreferredSize(new Dimension(178, 40));
@@ -136,11 +182,6 @@ public class StudyGroupDetail extends JDialog {
         fJoin.footerBtn.setMaximumSize(new Dimension(350, 50));
         fJoin.footerBtn.setMinimumSize(new Dimension(350, 50));
         fJoin.footerBtn.setPreferredSize(new Dimension(350, 50));
-        fJoin.footerBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                footerBtnActionPerformed(evt);
-            }
-        });
 
         GroupLayout footerLayout = new GroupLayout(fJoin.footer);
         fJoin.footer.setLayout(footerLayout);
@@ -186,7 +227,7 @@ public class StudyGroupDetail extends JDialog {
 
         defaultProfile.setBackground(new Color(255, 255, 255));
 //        defaultProfile.setIcon(new ImageIcon(getClass().getResource("/front/img/profile_circle.png"))); // NOI18N
-        defaultProfile.setIcon(new ImageIcon("../img/profile_circle.png")); // NOI18N
+        defaultProfile.setIcon(new ImageIcon("src/img/profile_circle.png")); // NOI18N
         defaultProfile.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         defaultProfile.setDoubleBuffered(true);
         defaultProfile.setMaximumSize(new Dimension(35, 35));
@@ -195,7 +236,7 @@ public class StudyGroupDetail extends JDialog {
 
         leaderName.setBackground(new Color(255, 255, 255));
         leaderName.setFont(new Font("돋움", 0, 18)); // NOI18N
-        leaderName.setText("프로그래밍 덕후");
+        leaderName.setText(leader);
 
         joinNowLabel.setBackground(new Color(255, 255, 255));
         joinNowLabel.setFont(new Font("돋움", 1, 24)); // NOI18N
@@ -338,7 +379,7 @@ public class StudyGroupDetail extends JDialog {
         studyDetailSecondR.setFont(new Font("돋움", 1, 14)); // NOI18N
         studyDetailSecondR.setLineWrap(true);
         studyDetailSecondR.setRows(5);
-        studyDetailSecondR.setText("세 달 동안 Java를 사용해서 함께 앱 개발 스터디 하실 분 모집합니다.\n\n매주 금요일마다 스터디 결과를 제출하도록 할 예정입니다.\n\n규칙 : 친목 금지, 과제 2회 이상 미제출시 스터디 퇴출");
+        studyDetailSecondR.setText(intro);
 
         GroupLayout studyDetailSecondLayout = new GroupLayout(studyDetailSecond);
         studyDetailSecond.setLayout(studyDetailSecondLayout);
@@ -437,9 +478,4 @@ public class StudyGroupDetail extends JDialog {
         pack();
 
     }
-    private void footerBtnActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-
 }

@@ -30,7 +30,8 @@ public class MakeStudy extends JPanel {
 
     public MakeStudy() {
         initComponents();
-        setMinimumSize(new Dimension(1030, 600));
+//        setMinimumSize(new Dimension(1030, 600));
+        setMinimumSize(new Dimension(716, 600));
         setVisible(true);
 //        setTitle("눈송보드 > 그룹 만들기");
 //        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
