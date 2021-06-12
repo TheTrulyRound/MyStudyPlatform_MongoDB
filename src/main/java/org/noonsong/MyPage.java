@@ -1,20 +1,14 @@
 package org.noonsong;
-
-import org.noonsong.firstLeftComponent.SetFirstLeftPanel;
-import org.noonsong.rightComponent.SetFooter;
 import org.noonsong.secondLeftComponent.SetHeaderFirst;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 //TODO 요소들 분리하기
 public class MyPage extends JPanel {
 
-    public static SetFirstLeftPanel firstLeft = new SetFirstLeftPanel();
     public static JPanel secondLeftPanel = new JPanel();
-    public static JPanel rightPanel = new JPanel();
+//    public static JPanel this = new JPanel();
 
     public static JLayeredPane studyPreview = new JLayeredPane();
     public static JPanel studyIntro = new JPanel();
@@ -31,6 +25,7 @@ public class MyPage extends JPanel {
         setMinimumSize(new Dimension(716, 600));
 //        setMinimumSize(new Dimension(1030, 600));
         setVisible(true);
+        Background.mainFrame.pack();
     }
 
     public void initComponents() {
@@ -40,9 +35,36 @@ public class MyPage extends JPanel {
 //        MakeStudy testMakeStudy = new MakeStudy();
         JButton studyHwMore = new JButton();
         JLabel studyImg = new JLabel();
-        rightPanel.setBackground(new java.awt.Color(255, 255, 255));
-        rightPanel.setMinimumSize(new java.awt.Dimension(716, 600));
-        rightPanel.setPreferredSize(new java.awt.Dimension(716, 600));
+
+        secondLeftPanel.setBackground(new Color(238, 241, 244));
+        secondLeftPanel.setMinimumSize(new Dimension(242, 600));
+        secondLeftPanel.setPreferredSize(new Dimension(242, 600));
+
+        GroupLayout secondLeftPanelLayout = new GroupLayout(secondLeftPanel);
+        secondLeftPanel.setLayout(secondLeftPanelLayout);
+        secondLeftPanelLayout.setHorizontalGroup(
+                secondLeftPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(secondLeftPanelLayout.createSequentialGroup()
+                                .addGroup(secondLeftPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(hFirst.headerFirst, GroupLayout.PREFERRED_SIZE, 232, Short.MAX_VALUE)
+                                        .addComponent(hFirst.headerLine, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                        .addGroup(GroupLayout.Alignment.TRAILING, secondLeftPanelLayout.createSequentialGroup()
+                                                .addGap(0, 6, Short.MAX_VALUE)))
+                                .addContainerGap())
+        );
+        secondLeftPanelLayout.setVerticalGroup(
+                secondLeftPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(secondLeftPanelLayout.createSequentialGroup()
+                                .addGap(0, 0, 0)
+                                .addComponent(hFirst.headerFirst, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(hFirst.headerLine, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addContainerGap(450, Short.MAX_VALUE))
+        );
+        this.setBackground(new java.awt.Color(255, 255, 255));
+        this.setMinimumSize(new java.awt.Dimension(716, 600));
+        this.setPreferredSize(new java.awt.Dimension(716, 600));
 
         homeMessage.setFont(new java.awt.Font("돋움", 1, 20)); // NOI18N
         homeMessage.setText("스터디 과제 제출 기한이 얼마 남지 않았습니다.");
@@ -130,8 +152,8 @@ public class MyPage extends JPanel {
 
 
 
-        javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(rightPanel);
-        rightPanel.setLayout(rightPanelLayout);
+        javax.swing.GroupLayout rightPanelLayout = new javax.swing.GroupLayout(this);
+        this.setLayout(rightPanelLayout);
         rightPanelLayout.setHorizontalGroup(
                 rightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(rightPanelLayout.createSequentialGroup()
@@ -163,30 +185,6 @@ public class MyPage extends JPanel {
                                         .addComponent(homeMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addContainerGap(542, Short.MAX_VALUE)))
         );
-
-
-        //TODO MakeStudy, StudyRoom, Explore 의 rightPanel을 각각 전환시킬 수 있도록 만들기
-//        GroupLayout layout = new GroupLayout(getContentPane());
-//        getContentPane().setLayout(layout);
-//        layout.setHorizontalGroup(
-//                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//                        .addGroup(layout.createSequentialGroup()
-//                                .addComponent(firstLeft.firstLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-//                                .addGap(0, 0, 0)
-//                                .addComponent(secondLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-//                                .addGap(0, 0, 0)
-//                                .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-//                                .addGap(0, 0, Short.MAX_VALUE))
-//        );
-//        layout.setVerticalGroup(
-//                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//                        .addComponent(firstLeft.firstLeftPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-//                        .addGroup(layout.createSequentialGroup()
-//                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//                                        .addComponent(secondLeftPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-//                                        .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-//                                .addGap(0, 0, Short.MAX_VALUE))
-//        );
 
 
     }

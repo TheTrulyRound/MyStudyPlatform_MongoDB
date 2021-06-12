@@ -36,7 +36,7 @@ public class MakeStudy extends JPanel {
 //        setTitle("눈송보드 > 그룹 만들기");
 //        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //        setLocationRelativeTo(null);
-//        pack();
+        Background.mainFrame.pack();
     }
 
     public void initComponents() {

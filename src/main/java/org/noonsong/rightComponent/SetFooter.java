@@ -9,6 +9,7 @@ import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 
 import org.bson.conversions.Bson;
+import org.noonsong.Explore;
 import org.noonsong.MakeStudy;
 import org.noonsong.LoginWindow;
 
@@ -107,6 +108,53 @@ public class SetFooter {
 
                 // TODO 새로 생성된 페이지로 바로 가기
 
+            }
+            catch (Exception ex) { System.out.println("서버 접속 실패."); }
+        }
+
+        if (footerType.equals("가입하기")) {
+            //Logger.getLogger("org.mongodb.driver").setLevel(Level.WARNING);
+            String connectionString = "mongodb+srv://studyplatform:studyplatform@studyplatformcluster.msr51.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+            try (MongoClient mongoClient = MongoClients.create(connectionString)) {
+                MongoDatabase study_group_info = mongoClient.getDatabase("study_group_info");
+                MongoCollection<Document> study_group_info_col = study_group_info.getCollection("groups");
+
+                MongoDatabase user_info = mongoClient.getDatabase("user_info");
+                MongoCollection<Document> user_info_col = user_info.getCollection("0");
+
+                // TODO 그룹인포 데이터베이스에 새로운 다큐먼트로 추가
+                Document studyDoc = study_group_info_col.find(eq("title", Explore.chosenGroup)).first();
+                Object members = studyDoc.get("members");
+                ArrayList<String> memberList = (ArrayList<String>) members;
+                memberList.add(LoginWindow.userId);
+
+                Document updatedStudy = new Document();
+                updatedStudy.append("title", (String) studyDoc.get("title"));
+                updatedStudy.append("intro", (String) studyDoc.get("intro"));
+                updatedStudy.append("rules", (String) studyDoc.get("rules"));
+                updatedStudy.append("isRecruiting", true);
+                updatedStudy.append("maxMember", (Integer) studyDoc.get("maxMember"));
+                updatedStudy.append("startingDate", (String) studyDoc.get("startingDate"));
+                updatedStudy.append("period", (Integer) studyDoc.get("period"));
+                updatedStudy.append("leader", (String) studyDoc.get("leader"));
+                updatedStudy.append("members", (ArrayList<String>) memberList);
+                updatedStudy.append("homework", (ArrayList<String>) studyDoc.get("homework"));
+                study_group_info_col.replaceOne(eq("title", Explore.chosenGroup), updatedStudy);
+
+                // TODO 내 멤버 정보 업데이트
+                Object doc = LoginWindow.userDoc.get("joinedGroup");        // 현재 조인된 그룹의 오브젝트 가져오기
+                ArrayList<String> joinedGroup = (ArrayList<String>) doc;    // 오브젝트 타입 변환
+                joinedGroup.add(Explore.chosenGroup);            // 새로 만든 그룹을 리스트에 추가
+                System.out.println(joinedGroup);                            // 소속된 그룹 리스트 출력
+
+                Document new_account_info = new Document();
+                new_account_info.append("username", LoginWindow.userDoc.get("username"));
+                new_account_info.append("password", LoginWindow.userDoc.get("password"));
+                new_account_info.append("email", LoginWindow.userDoc.get("email"));
+                new_account_info.append("joinedGroup", joinedGroup);
+
+                user_info_col.replaceOne(eq("_id", LoginWindow.userDoc.get("_id")), new_account_info);
+                LoginWindow.userDoc = new_account_info;
             }
             catch (Exception ex) { System.out.println("서버 접속 실패."); }
         }

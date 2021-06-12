@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import javax.swing.*;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -60,6 +61,11 @@ public class StudyGroupDetail extends JDialog {
 
         String intro = "";
         String leader = "";
+        ArrayList<String> memberList;
+        int memberNum = 0;
+        int maxMemberNum = 0;
+        int correctMemberNum = 0;
+        HashSet<String> hashSet = new HashSet<String>();
 
         //Logger.getLogger("org.mongodb.driver").setLevel(Level.WARNING);
         String connectionString = "mongodb+srv://studyplatform:studyplatform@studyplatformcluster.msr51.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
@@ -74,6 +80,19 @@ public class StudyGroupDetail extends JDialog {
             Document groupInfo = study_group_info_col.find(eq("title", groupName)).first();
             intro = (String) groupInfo.get("intro");
             leader = (String) groupInfo.get("leader");
+            memberList = (ArrayList<String>) groupInfo.get("members");
+            memberNum = memberList.size();
+            maxMemberNum = (Integer) groupInfo.get("maxMember");
+
+
+            for (String member : memberList) {
+                hashSet.add(member);
+            }
+            correctMemberNum = hashSet.size();
+
+
+
+
             System.out.println(intro);
 
 //            // TODO 내 멤버 정보 업데이트
@@ -247,7 +266,7 @@ public class StudyGroupDetail extends JDialog {
 
         joinNowNum.setBackground(new Color(255, 255, 255));
         joinNowNum.setFont(new Font("돋움", 0, 18)); // NOI18N
-        joinNowNum.setText("15/30");
+        joinNowNum.setText(correctMemberNum + "/" + maxMemberNum);
         joinNowNum.setHorizontalTextPosition(SwingConstants.CENTER);
 
         joinDateLabel.setBackground(new Color(255, 255, 255));

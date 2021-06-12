@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import javax.swing.GroupLayout;
 
+
 public class StudyRoom extends JPanel {
     public static SetFirstLeftPanel firstLeft = new SetFirstLeftPanel();
     public static JPanel secondLeftPanel = new JPanel();
@@ -51,12 +52,13 @@ public class StudyRoom extends JPanel {
     public static JButton studyResultMoreBtn1= new javax.swing.JButton();
 
     //TODO 그룹 스터디 네임 변수명과 연결
-    SetHeaderFirst hRoom = new SetHeaderFirst("JAVA정복");
+    public SetHeaderFirst hRoom = new SetHeaderFirst("스터디룸");
 
     public StudyRoom(String groupName) {
         setMinimumSize(new Dimension(1030, 600));
         initComponents();
         setVisible(true);
+        Background.mainFrame.pack();
     }
 
     public void initComponents() {
@@ -99,6 +101,7 @@ public class StudyRoom extends JPanel {
         hwList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         hwList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         hwPanel.setViewportView(hwList);
+
 
 // TODO DB연결해야하는 요소3 - announceList
         talkChannelList.setBackground(new java.awt.Color(238, 241, 244));

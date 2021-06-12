@@ -3,9 +3,6 @@ package org.noonsong.firstLeftComponent;
 import org.noonsong.Background;
 import org.noonsong.Explore;
 import org.noonsong.LoginWindow;
-import org.noonsong.MakeStudy;
-import org.noonsong.StudyRoom;
-import org.noonsong.MyPage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +16,6 @@ import static org.noonsong.Background.*;
 public class SetFirstLeftPanel implements ActionListener {
 
     //firstLeftPanel의 큰 틀. 코드 작성 필요없음.
-
     public static JPanel firstLeftPanel = new JPanel();
     public static JButton myBtn = new JButton();
     public static JButton[] groupBtn = new JButton[4];
@@ -46,14 +42,18 @@ public class SetFirstLeftPanel implements ActionListener {
             System.out.println("JoinedGroup: " + joinedGroup);
             for (int i = 0; i < 4; i++) {
                 try {
+                    System.out.println(i+"번째 버튼 생성 - 정상");
                     groupBtn[i] = new JButton();
                     groupBtn[i].addActionListener(this);
                     setGroupBtn(groupBtn[i], joinedGroup.get(i));
                 } catch (Exception ex) {
+                    System.out.println(i+"번째 버튼 생성 - 비정상");
                     groupBtn[i] = new JButton();
+                    groupBtn[i].addActionListener(this);
                     setGroupBtn(groupBtn[i], "");   // 작동 안되는 버튼들
                 }
             }
+            System.out.println("버튼들 제대로 생성됨");
         }
         setGroupsBtn(groupPanel);
 
@@ -114,6 +114,7 @@ public class SetFirstLeftPanel implements ActionListener {
 
     }
 
+    //setGroupBtn(groupBtn[0],groupName)
     public void setGroupBtn(JButton btn, String groupName) {
         btn.setBackground(new Color(253, 253, 248));
         btn.setForeground(new Color(0, 0, 0));
@@ -163,42 +164,165 @@ public class SetFirstLeftPanel implements ActionListener {
         }
     }
 
+
     public void actionPerformed(ActionEvent evt) {
         Object doc = LoginWindow.userDoc.get("joinedGroup");        // 현재 조인된 그룹의 오브젝트 가져오기
         ArrayList<String> joinedGroup = (ArrayList<String>) doc;    // 오브젝트 타입 변환
 
-        if(evt.getSource() == groupBtn[0]){
-            //ToDO 스터디룸 패널화 안함
-            try {
-                new StudyRoom(joinedGroup.get(0));
-            } catch (Exception ex) {}
+        String groupName = evt.getActionCommand();
+        if (joinedGroup.size() > 1  && groupName.equals(joinedGroup.get(0))) {
+            Background.allLayout(LoginWindow.roomPanel0, LoginWindow.roomPanel0.secondLeftPanel);                // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
+//            scount += 1;
+            System.out.println("if 문 안의 group 버튼 실행: " + scount);
+            System.out.println("tracker: : " + LoginWindow.tracker);
+            switch (LoginWindow.tracker) {
+                case 1: // Explore
+                    LoginWindow.explorePanel.setVisible(false);
+                    LoginWindow.explorePanel.secondLeftPanel.setVisible(false);
+                    System.out.println("탐색 페이지 안보이게해라 ");
+                    break;
+                case 2: // MakeStudy
+                    LoginWindow.makeStudyPanel.setVisible(false);
+                    LoginWindow.makeStudyPanel.secondLeftPanel.setVisible(false);
+//                    mainFrame.remove(makeStudyPanel);
+                    System.out.println("스터디 생성 페이지 안보이게해라 ");
+                    break;
+                case 3: // StudyRoom
+                    LoginWindow.roomPanel0.setVisible(true);
+                    LoginWindow.roomPanel0.secondLeftPanel.setVisible(true);
+                    try {
+                        LoginWindow.roomPanel1.setVisible(false);
+                        LoginWindow.roomPanel1.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel2.setVisible(false);
+                        LoginWindow.roomPanel2.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel3.setVisible(false);
+                        LoginWindow.roomPanel3.secondLeftPanel.setVisible(false);
+                    } catch (Exception ex) {}
+                    System.out.println("스터디룸 보이게 해라 ");
+                    break;
+                case 4: // MyPage
+                    LoginWindow.myPagePanel.setVisible(false);
+                    LoginWindow.myPagePanel.secondLeftPanel.setVisible(false);
+                    System.out.println("마이 페이지 안보이게해라 ");
+                    break;
+            }
+            LoginWindow.tracker = 3;
+        }
+        else if (joinedGroup.size() > 2 && groupName.equals(joinedGroup.get(1))) {
+            Background.allLayout(LoginWindow.roomPanel1, LoginWindow.roomPanel1.secondLeftPanel);                // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
+//            scount += 1;
+//            System.out.println("if 문 안의 group 버튼 실행: " + scount);
+//            System.out.println("tracker: : " + LoginWindow.tracker);
+            switch (LoginWindow.tracker) {
+                case 1: // Explore
+                    LoginWindow.explorePanel.setVisible(false);
+                    LoginWindow.explorePanel.secondLeftPanel.setVisible(false);
+                    System.out.println("탐색 페이지 안보이게해라 ");
+                    break;
+                case 2: // MakeStudy
+                    LoginWindow.makeStudyPanel.setVisible(false);
+                    LoginWindow.makeStudyPanel.secondLeftPanel.setVisible(false);
+//                    mainFrame.remove(makeStudyPanel);
+                    System.out.println("스터디 생성 페이지 안보이게해라 ");
+                    break;
+                case 3: // RoomPanel
+                    LoginWindow.roomPanel1.setVisible(true);
+                    LoginWindow.roomPanel1.secondLeftPanel.setVisible(true);
+                    try {
+                        LoginWindow.roomPanel0.setVisible(false);
+                        LoginWindow.roomPanel0.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel2.setVisible(false);
+                        LoginWindow.roomPanel2.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel3.setVisible(false);
+                        LoginWindow.roomPanel3.secondLeftPanel.setVisible(false);
+                    } catch (Exception ex) {}
+                    System.out.println("스터디룸 보이게 해라 ");
+                    break;
+                case 4: // MyPage
+                    LoginWindow.myPagePanel.setVisible(false);
+                    LoginWindow.myPagePanel.secondLeftPanel.setVisible(false);
+                    System.out.println("마이 페이지 안보이게해라 ");
+                    break;
+            }
+            LoginWindow.tracker = 3;
+        }
+        else if (joinedGroup.size() > 3 && groupName.equals(joinedGroup.get(2))) {
+            Background.allLayout(LoginWindow.roomPanel2, LoginWindow.roomPanel2.secondLeftPanel);                // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
             scount += 1;
             System.out.println("if 문 안의 group 버튼 실행: " + scount);
+            System.out.println("tracker: " + LoginWindow.tracker);
+            switch (LoginWindow.tracker) {
+                case 1: // Explore
+                    LoginWindow.explorePanel.setVisible(false);
+                    LoginWindow.explorePanel.secondLeftPanel.setVisible(false);
+                    System.out.println("탐색 페이지 안보이게해라 ");
+                    break;
+                case 2: // MakeStudy
+                    LoginWindow.makeStudyPanel.setVisible(false);
+                    LoginWindow.makeStudyPanel.secondLeftPanel.setVisible(false);
+//                    mainFrame.remove(makeStudyPanel);
+                    System.out.println("스터디 생성 페이지 안보이게해라 ");
+                    break;
+                case 3: // StudyRoom
+                    LoginWindow.roomPanel2.setVisible(true);
+                    LoginWindow.roomPanel2.secondLeftPanel.setVisible(true);
+                    try {
+                        LoginWindow.roomPanel0.setVisible(false);
+                        LoginWindow.roomPanel0.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel1.setVisible(false);
+                        LoginWindow.roomPanel1.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel3.setVisible(false);
+                        LoginWindow.roomPanel3.secondLeftPanel.setVisible(false);
+                    } catch (Exception ex) {}
+                    System.out.println("스터디룸 보이게 해라 ");
+                    break;
+                case 4: // MyPage
+                    LoginWindow.myPagePanel.setVisible(false);
+                    LoginWindow.myPagePanel.secondLeftPanel.setVisible(false);
+                    System.out.println("마이 페이지 안보이게해라 ");
+                    break;
+            }
+            LoginWindow.tracker = 3;
         }
-        else if(evt.getSource() == groupBtn[1]){
-            //ToDO 스터디룸 패널화 안함
-            try {
-                new StudyRoom(joinedGroup.get(1));
-            } catch (Exception ex) {}
+        else if (joinedGroup.size() > 4  && groupName.equals(joinedGroup.get(3))) {
+            Background.allLayout(LoginWindow.roomPanel3, LoginWindow.roomPanel3.secondLeftPanel);                // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
             scount += 1;
             System.out.println("if 문 안의 group 버튼 실행: " + scount);
+            System.out.println("tracker: : " + LoginWindow.tracker);
+            switch (LoginWindow.tracker) {
+                case 1:
+                    LoginWindow.explorePanel.setVisible(false);
+                    LoginWindow.explorePanel.secondLeftPanel.setVisible(false);
+                    System.out.println("탐색 페이지 안보이게해라 ");
+                    break;
+                case 2:
+                    LoginWindow.makeStudyPanel.setVisible(false);
+                    LoginWindow.makeStudyPanel.secondLeftPanel.setVisible(false);
+//                    mainFrame.remove(makeStudyPanel);
+                    System.out.println("스터디 생성 페이지 안보이게해라 ");
+                    break;
+                case 3:
+                    LoginWindow.roomPanel3.setVisible(true);
+                    LoginWindow.roomPanel3.secondLeftPanel.setVisible(true);
+                    try {
+                        LoginWindow.roomPanel0.setVisible(false);
+                        LoginWindow.roomPanel0.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel1.setVisible(false);
+                        LoginWindow.roomPanel1.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel2.setVisible(false);
+                        LoginWindow.roomPanel2.secondLeftPanel.setVisible(false);
+                    } catch (Exception ex) {}
+                    System.out.println("스터디룸 보이게 해라 ");
+                    break;
+                case 4:
+                    LoginWindow.myPagePanel.setVisible(false);
+                    LoginWindow.myPagePanel.secondLeftPanel.setVisible(false);
+                    System.out.println("마이 페이지 안보이게해라 ");
+                    break;
+            }
+            LoginWindow.tracker = 3;
         }
-        else if(evt.getSource() == groupBtn[2]){
-            //ToDO 스터디룸 패널화 안함
-            try {
-                new StudyRoom(joinedGroup.get(2));
-            } catch (Exception ex) {}
-            scount += 1;
-            System.out.println("if 문 안의 group 버튼 실행: " + scount);
-        }
-        else if(evt.getSource() == groupBtn[3]){
-            //ToDO 스터디룸 패널화 안함
-            try {
-                new StudyRoom(joinedGroup.get(3));
-            } catch (Exception ex) {}
-            scount += 1;
-            System.out.println("if 문 안의 group 버튼 실행: " + scount);
-        }
+
         else if (evt.getSource() == exploreBtn) {
             //TODO 찾기 아직 패널화 안함
             Background.allLayout(LoginWindow.explorePanel, LoginWindow.explorePanel.secondLeftPanel);
@@ -206,23 +330,30 @@ public class SetFirstLeftPanel implements ActionListener {
             System.out.println("if 문 안의 exploreBtn 실행: " + ecount);
             System.out.println("tracker: : " + LoginWindow.tracker);
             switch (LoginWindow.tracker) {
-                case 1:
+                case 1: // Explore
                     LoginWindow.explorePanel.setVisible(true);
                     LoginWindow.explorePanel.secondLeftPanel.setVisible(true);
                     System.out.println("탐색 페이지 보이게해라 ");
                     break;
-                case 2:
+                case 2: // MakeStudy
                     LoginWindow.makeStudyPanel.setVisible(false);
                     LoginWindow.makeStudyPanel.secondLeftPanel.setVisible(false);
-
                     System.out.println("스터디 생성 페이지 안보이게해라 ");
                     break;
-                case 3:
-                    LoginWindow.roomPanel.setVisible(false);
-                    LoginWindow.roomPanel.secondLeftPanel.setVisible(false);
+                case 3: // StudyRoom
+                    try {
+                        LoginWindow.roomPanel0.setVisible(false);
+                        LoginWindow.roomPanel0.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel1.setVisible(false);
+                        LoginWindow.roomPanel1.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel2.setVisible(false);
+                        LoginWindow.roomPanel2.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel3.setVisible(false);
+                        LoginWindow.roomPanel3.secondLeftPanel.setVisible(false);
+                    } catch (Exception ex) {}
                     System.out.println("스터디룸 안보이게해라 ");
                     break;
-                case 4:
+                case 4: // MyPage
                     LoginWindow.myPagePanel.setVisible(false);
                     LoginWindow.myPagePanel.secondLeftPanel.setVisible(false);
                     System.out.println("마이 페이지 안보이게해라 ");
@@ -234,62 +365,41 @@ public class SetFirstLeftPanel implements ActionListener {
             // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
             Background.allLayout(LoginWindow.makeStudyPanel, LoginWindow.makeStudyPanel.secondLeftPanel);
             pcount += 1;
-            System.out.println("if문 안의 plusBtn 실행: " + pcount);
-            System.out.println("tracker: : " + LoginWindow.tracker);
+//            System.out.println("if문 안의 plusBtn 실행: " + pcount);
+//            System.out.println("tracker: : " + LoginWindow.tracker);
             switch (LoginWindow.tracker) {
-                case 1:
+                case 1: // Explore
                     LoginWindow.explorePanel.setVisible(false);
                     LoginWindow.explorePanel.secondLeftPanel.setVisible(false);
                     System.out.println("탐색 페이지 안보이게해라 ");
                     break;
-                case 2:
+                case 2: // MakeStudy
                     LoginWindow.makeStudyPanel.setVisible(true);
                     LoginWindow.makeStudyPanel.secondLeftPanel.setVisible(true);
                     System.out.println("스터디 생성 페이지 보이게해라 ");
                     break;
-                case 3:
-                    LoginWindow.roomPanel.setVisible(false);
-                    LoginWindow.roomPanel.secondLeftPanel.setVisible(false);
+                case 3: // StudyRoom
+                    try {
+                        LoginWindow.roomPanel0.setVisible(false);
+                        LoginWindow.roomPanel0.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel1.setVisible(false);
+                        LoginWindow.roomPanel1.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel2.setVisible(false);
+                        LoginWindow.roomPanel2.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel3.setVisible(false);
+                        LoginWindow.roomPanel3.secondLeftPanel.setVisible(false);
+                    } catch (Exception ex) {}
                     System.out.println("스터디룸 안보이게해라 ");
                     break;
-                case 4:
+                case 4: // MyPage
                     LoginWindow.myPagePanel.setVisible(false);
                     LoginWindow.myPagePanel.secondLeftPanel.setVisible(false);
                     System.out.println("마이 페이지 안보이게해라 ");
                     break;
             }
             LoginWindow.tracker = 2;
-        } else if (evt.getSource() == groupBtn) {
-            Background.allLayout(LoginWindow.roomPanel, LoginWindow.roomPanel.secondLeftPanel);                // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
-            scount += 1;
-            System.out.println("if 문 안의 group 버튼 실행: " + scount);
-            System.out.println("tracker: : " + LoginWindow.tracker);
-            switch (LoginWindow.tracker) {
-                case 1:
-                    LoginWindow.explorePanel.setVisible(false);
-                    LoginWindow.explorePanel.secondLeftPanel.setVisible(false);
-//                    mainFrame.remove(explorePanel);
-                    System.out.println("탐색 페이지 안보이게해라 ");
-                    break;
-                case 2:
-                    LoginWindow.makeStudyPanel.setVisible(false);
-                    LoginWindow.makeStudyPanel.secondLeftPanel.setVisible(false);
-//                    mainFrame.remove(makeStudyPanel);
-                    System.out.println("스터디 생성 페이지 안보이게해라 ");
-                    break;
-                case 3:
-                    LoginWindow.roomPanel.setVisible(true);
-                    LoginWindow.roomPanel.secondLeftPanel.setVisible(true);
-                    System.out.println("스터디룸 보이게 해라 ");
-                    break;
-                case 4:
-                    LoginWindow.myPagePanel.setVisible(false);
-                    LoginWindow.myPagePanel.secondLeftPanel.setVisible(false);
-                    System.out.println("마이 페이지 안보이게해라 ");
-                    break;
-            }
-            LoginWindow.tracker = 3;
-        } else {
+        }
+        else if (evt.getSource() == myBtn) {
             // 스터디 생성 페이지가 열린 새로운 프레임 띄우기
             Background.allLayout(LoginWindow.myPagePanel, LoginWindow.myPagePanel.secondLeftPanel);
             bcount += 1;
@@ -299,7 +409,6 @@ public class SetFirstLeftPanel implements ActionListener {
                 case 1:
                     LoginWindow.explorePanel.setVisible(false);
                     LoginWindow.explorePanel.secondLeftPanel.setVisible(false);
-//                    mainFrame.remove(explorePanel);
                     System.out.println("탐색 페이지 보이게해라 ");
                     break;
                 case 2:
@@ -308,8 +417,16 @@ public class SetFirstLeftPanel implements ActionListener {
                     System.out.println("스터디 생성 페이지 안보이게해라 ");
                     break;
                 case 3:
-                    LoginWindow.roomPanel.setVisible(false);
-                    LoginWindow.roomPanel.secondLeftPanel.setVisible(false);
+                    try {
+                        LoginWindow.roomPanel0.setVisible(false);
+                        LoginWindow.roomPanel0.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel1.setVisible(false);
+                        LoginWindow.roomPanel1.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel2.setVisible(false);
+                        LoginWindow.roomPanel2.secondLeftPanel.setVisible(false);
+                        LoginWindow.roomPanel3.setVisible(false);
+                        LoginWindow.roomPanel3.secondLeftPanel.setVisible(false);
+                    } catch (Exception ex) {}
                     System.out.println("스터디룸 안보이게해라 ");
                     break;
                 case 4:
@@ -320,10 +437,8 @@ public class SetFirstLeftPanel implements ActionListener {
             }
             LoginWindow.tracker = 4;
         }
-
-        rightPanel.updateUI();
-
-
-
+        Background.secondLeftPanel.updateUI();
+        Background.rightPanel.updateUI();
+        Background.mainFrame.pack();
     }
 }

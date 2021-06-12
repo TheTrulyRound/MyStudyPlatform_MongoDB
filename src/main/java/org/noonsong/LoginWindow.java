@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.lang.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -271,7 +272,10 @@ public class LoginWindow extends JFrame implements ActionListener {
     public static Explore explorePanel;
     public static MakeStudy makeStudyPanel;
     public static MyPage myPagePanel;
-    public static StudyRoom roomPanel;
+    public static StudyRoom roomPanel0;
+    public static StudyRoom roomPanel1;
+    public static StudyRoom roomPanel2;
+    public static StudyRoom roomPanel3;
 
     public void actionPerformed(ActionEvent e) {
         // TODO 로그인 하기
@@ -290,10 +294,29 @@ public class LoginWindow extends JFrame implements ActionListener {
                 explorePanel = new Explore();
                 makeStudyPanel = new MakeStudy();
                 myPagePanel = new MyPage();
-
                 explorePanel.setVisible(true);
                 makeStudyPanel.setVisible(false);
                 myPagePanel.setVisible(false);
+
+                Background.allLayout(explorePanel, explorePanel.secondLeftPanel);
+                Background.secondLeftPanel.updateUI();
+                Background.rightPanel.updateUI();
+
+                Object doc = userDoc.get("joinedGroup");        // 현재 조인된 그룹의 오브젝트 가져오기
+                ArrayList<String> joinedGroup = (ArrayList<String>) doc;    // 오브젝트 타입 변환
+
+                try {
+                    roomPanel0 = new StudyRoom(joinedGroup.get(0));
+                    roomPanel0.setVisible(false);
+                    roomPanel1 = new StudyRoom(joinedGroup.get(1));
+                    roomPanel1.setVisible(false);
+                    roomPanel2 = new StudyRoom(joinedGroup.get(2));
+                    roomPanel2.setVisible(false);
+                    roomPanel3 = new StudyRoom(joinedGroup.get(3));
+                    roomPanel3.setVisible(false);
+                } catch (Exception ex) {
+                    System.out.println("You have less than 4 groups joined");
+                }
 
                 System.out.println("User ID: "+ LoginWindow.userId);  // 로그인 되면 유저 아이디 출력
             }

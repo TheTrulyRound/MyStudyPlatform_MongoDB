@@ -33,6 +33,8 @@ public class Explore extends JPanel {
     JTextPane studyIntroW;
     JButton studyMore;
 
+    public static String chosenGroup = "";
+
 
     public Explore() {
         initComponents();
@@ -40,7 +42,7 @@ public class Explore extends JPanel {
         setMinimumSize(new Dimension(716, 600));
 //        setLocationRelativeTo(null);
         setVisible(true);
-//        pack();
+        Background.mainFrame.pack();
     }
 
     public static int count;
@@ -284,6 +286,7 @@ public class Explore extends JPanel {
                             // 해당 그룹에 대한 studyRoomDetail 창 띄우기
                             System.out.println("클릭잘됨: 인덱스 " + rowIndex);
                             new StudyGroupDetail((String) studyTable.getModel().getValueAt(rowIndex, 0));
+                            chosenGroup = (String) studyTable.getModel().getValueAt(rowIndex, 0);
                         }
                     }
                 });
