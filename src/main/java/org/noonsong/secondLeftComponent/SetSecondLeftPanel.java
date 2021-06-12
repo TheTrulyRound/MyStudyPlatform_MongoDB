@@ -1,3 +1,4 @@
+//사용하지 않은 component 
 package org.noonsong.secondLeftComponent;
 
 import javax.swing.*;
